@@ -10,4 +10,6 @@ public interface IngredientService {
     List<Ingredient> findByNameWithin(List<String> names);
 
     void increasePrice();
+
+    void deleteByName(String name);
 }

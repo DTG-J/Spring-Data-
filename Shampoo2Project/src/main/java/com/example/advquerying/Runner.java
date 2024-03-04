@@ -58,7 +58,9 @@ public class Runner implements CommandLineRunner {
 
        //result.forEach(System.out::println);
 
-       ingredientService.increasePrice();
+      // ingredientService.increasePrice();// The method was changed to update Name
+
+        ingredientService.deleteByName("AppleUpdated");
 
 
 

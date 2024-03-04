@@ -28,4 +28,9 @@ private IngredientRepository ingredientRepository;
     public void increasePrice() {
         ingredientRepository.increasePriceBy10Percent();
     }
+
+    @Override
+    public void deleteByName(String name) {
+ingredientRepository.deleteIngredientByName(name);
+    }
 }
