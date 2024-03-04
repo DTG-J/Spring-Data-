@@ -19,7 +19,7 @@ public interface IngredientRepository extends JpaRepository <Ingredient, Long>{
 @Transactional
     @Query("UPDATE Ingredient AS i SET i.name = concat(i.name, 'Updated')")
     void increasePriceBy10Percent();
-
+@Transactional
 void deleteIngredientByName(String name);
 
 
