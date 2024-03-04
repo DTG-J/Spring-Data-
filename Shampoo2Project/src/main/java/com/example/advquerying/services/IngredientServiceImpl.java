@@ -23,4 +23,9 @@ private IngredientRepository ingredientRepository;
     public List<Ingredient> findByNameWithin(List<String> names) {
         return ingredientRepository.findByNameInOrderByPrice(names);
     }
+
+    @Override
+    public void increasePrice() {
+        ingredientRepository.increasePriceBy10Percent();
+    }
 }

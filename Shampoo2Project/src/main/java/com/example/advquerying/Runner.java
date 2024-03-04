@@ -58,6 +58,8 @@ public class Runner implements CommandLineRunner {
 
        //result.forEach(System.out::println);
 
+       ingredientService.increasePrice();
+
 
 
 

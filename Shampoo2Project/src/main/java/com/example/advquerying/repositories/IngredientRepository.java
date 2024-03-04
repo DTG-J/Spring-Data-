@@ -14,6 +14,6 @@ public interface IngredientRepository extends JpaRepository <Ingredient, Long>{
 
     List<Ingredient> findByNameInOrderByPrice(List<String> names);
 
-    @Query("UPDATE Ingredient AS i SET i.price=i.price*1.1")
+    @Query("UPDATE Ingredient AS i SET i.name = concat(i.name, 'Updated')")
     void increasePriceBy10Percent();
 }
