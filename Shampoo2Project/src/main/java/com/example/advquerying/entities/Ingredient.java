@@ -13,9 +13,7 @@ public class Ingredient extends BaseEntity {
     private BigDecimal price;
     @ManyToMany(
             targetEntity = Shampoo.class,
-            mappedBy = "ingredients",
-            fetch = FetchType.EAGER,
-            cascade = CascadeType.ALL)
+            mappedBy = "ingredients")
     private Set<Shampoo> shampoos;
 
     public Ingredient() {
