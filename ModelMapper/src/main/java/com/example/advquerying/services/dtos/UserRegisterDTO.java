@@ -4,7 +4,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 public class UserRegisterDTO {
-   @Pattern(regexp = "\\w+@\\w+.\\w+", message = "Email is not matching the pattern.")
+    @Pattern(regexp = "\\w+@\\w+.\\w+", message = "Email is not matching the pattern.")
     private String email;
    @Pattern(regexp = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).*", message = "Password doesn't match the pattern.")
    @Size(min = 6, message = "Password needs to be at least 6 symbols. ")
