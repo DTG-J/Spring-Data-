@@ -8,6 +8,7 @@ import java.util.List;
 @Entity
 @Table(name = "constellations")
 public class Constellation {
+    @Column
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -16,13 +17,13 @@ public class Constellation {
     @Size(min = 3, max = 20, message = "Name must be between 3 and 20 characters")
     @Column(unique = true)
     private String name;
-
+    @Column
     @NotBlank(message = "Description is required")
     @Size(min = 5, message = "Description must be at least 5 characters long")
     private String description;
 
     // Define the relationship with stars
-    @OneToMany(mappedBy = "constellation", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "constellation")
     private List<Star> stars;
 
     // Constructors, getters, and setters

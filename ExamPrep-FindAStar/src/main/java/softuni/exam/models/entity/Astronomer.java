@@ -7,11 +7,13 @@ import javax.validation.constraints.Size;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.List;
 
 
 @Entity
 @Table(name = "astronomers")
 public class Astronomer {
+    @Column
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -26,6 +28,7 @@ public class Astronomer {
     @Column(name = "last_name")
     private String lastName;
 
+    @Column
     @DecimalMin(value = "15000.00", message = "Salary must be greater than or equal to 15000.00")
     private double salary;
 
@@ -33,13 +36,14 @@ public class Astronomer {
     @Column(name = "average_observation_hours")
     private double averageObservationHours;
 
+    @Column
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthday;
 
-    @ManyToOne
+    @ManyToMany
     @JoinColumn(name = "observing_star_id")
-    private Star observingStar;
+    private List<Star> observingStar;
 
     // Constructors, getters, and setters
     public Astronomer() {
@@ -103,11 +107,11 @@ public class Astronomer {
     }
 
     public Star getObservingStar() {
-        return observingStar;
+        return (Star) observingStar;
     }
 
     public void setObservingStar(Star observingStar) {
-        this.observingStar = observingStar;
+        this.observingStar = (List<Star>) observingStar;
     }
 }
 

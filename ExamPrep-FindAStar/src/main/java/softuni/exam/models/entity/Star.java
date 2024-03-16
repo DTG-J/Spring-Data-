@@ -10,6 +10,7 @@ import java.util.List;
 @Entity
 @Table(name = "stars")
 public class Star {
+    @Column
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -35,7 +36,7 @@ public class Star {
     @Enumerated(EnumType.STRING)
     private StarType starType;
 
-    @ManyToMany(mappedBy = "stars")
+    @ManyToMany(mappedBy = "observingStar")
     private List<Astronomer> observers;
 
     @ManyToOne
@@ -54,6 +55,62 @@ public class Star {
     }
 
     // Getters and setters
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public double getLightYears() {
+        return lightYears;
+    }
+
+    public void setLightYears(double lightYears) {
+        this.lightYears = lightYears;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public StarType getStarType() {
+        return starType;
+    }
+
+    public void setStarType(StarType starType) {
+        this.starType = starType;
+    }
+
+    public List<Astronomer> getObservers() {
+        return observers;
+    }
+
+    public void setObservers(List<Astronomer> observers) {
+        this.observers = observers;
+    }
+
+    public Constellation getConstellation() {
+        return constellation;
+    }
+
+    public void setConstellation(Constellation constellation) {
+        this.constellation = constellation;
+    }
 }
 
 
