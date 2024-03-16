@@ -1,27 +1,114 @@
 package softuni.exam.models.entity;
 
-import javax.persistence.Column;
+import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import org.springframework.format.annotation.DateTimeFormat;
 
-public class Astronomer extends BaseEntity{
+import java.util.Date;
 
-   /* •	id - accepts integer values, a primary identification field, an auto incremented field.
-•	first name - accepts char sequence (between 2 to 30 inclusive).
-            •	last name - accepts char sequence (between 2 to 30 inclusive).
-            •	salary - accepts number values that are more than or equal to 15000.00.
-            •	averageObservationHours - accepts number values that are more than 500.00.
-            •	birthday - a date in the "yyyy-MM-dd" format. Can be nullable.
-•	observing star - the current star that the astronomer is studying.
-            •	Constraint: The astronomers table has a relation with stars table.*/
+
+@Entity
+@Table(name = "astronomers")
+public class Astronomer {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @NotBlank(message = "First name is required")
+    @Size(min = 2, max = 30, message = "First name must be between 2 and 30 characters")
     @Column(name = "first_name")
-    @Size(min = 2, max = 30)
-    private String firsName;
+    private String firstName;
+
+    @NotBlank(message = "Last name is required")
+    @Size(min = 2, max = 30, message = "Last name must be between 2 and 30 characters")
     @Column(name = "last_name")
-    @Size(min = 2, max = 30)
     private String lastName;
-    @Column
-    @DecimalMin(value = "15000.00")
+
+    @DecimalMin(value = "15000.00", message = "Salary must be greater than or equal to 15000.00")
     private double salary;
 
+    @DecimalMin(value = "500.00", message = "Average observation hours must be greater than or equal to 500.00")
+    @Column(name = "average_observation_hours")
+    private double averageObservationHours;
+
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date birthday;
+
+    @ManyToOne
+    @JoinColumn(name = "observing_star_id")
+    private Star observingStar;
+
+    // Constructors, getters, and setters
+    public Astronomer() {
+    }
+
+    public Astronomer(String firstName, String lastName, double salary, double averageObservationHours) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.salary = salary;
+        this.averageObservationHours = averageObservationHours;
+    }
+
+    // Getters and setters
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(double salary) {
+        this.salary = salary;
+    }
+
+    public double getAverageObservationHours() {
+        return averageObservationHours;
+    }
+
+    public void setAverageObservationHours(double averageObservationHours) {
+        this.averageObservationHours = averageObservationHours;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+
+    public Star getObservingStar() {
+        return observingStar;
+    }
+
+    public void setObservingStar(Star observingStar) {
+        this.observingStar = observingStar;
+    }
 }
+
+
