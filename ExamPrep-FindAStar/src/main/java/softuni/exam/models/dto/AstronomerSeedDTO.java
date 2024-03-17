@@ -7,36 +7,35 @@ import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlElement;
 import java.time.LocalDate;
 
 public class AstronomerSeedDTO {
-    @Column(name = "first_name")
+    @XmlElement(name = "first_name")
     @NotNull
     @Size(min = 2, max = 30, message = "First name must be between 2 and 30 characters")
     private String firstName;
 
     //@NotBlank(message = "Last name is required")
-    @Column(name = "last_name")
+    @XmlElement(name = "last_name")
     @NotNull
     @Size(min = 2, max = 30, message = "Last name must be between 2 and 30 characters")
     private String lastName;
 
-    @Column
+    @XmlElement
     @DecimalMin(value = "15000.00", message = "Salary must be greater than or equal to 15000.00")
     private Double salary;
-    @Column(name = "average_observation_hours")
+    @XmlElement(name = "average_observation_hours")
     @NotNull
     @DecimalMin(value = "500.00", message = "Average observation hours must be greater than or equal to 500.00")
     private Double averageObservationHours;
 
-    @Column
+    @XmlElement
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthday;
 
-    @ManyToOne
-    @NotNull
-    @JoinColumn(name = "observing_star_id")
+    @XmlElement(name = "observing_star_id")
     private Long observingStar;
 
     public String getFirstName() {
