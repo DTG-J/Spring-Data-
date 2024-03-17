@@ -3,46 +3,29 @@ package softuni.exam.models.entity;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
+import java.math.BigInteger;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "constellations")
-public class Constellation {
-    @Column
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
-    @NotBlank(message = "Name is required")
-    @Size(min = 3, max = 20, message = "Name must be between 3 and 20 characters")
-    @Column(unique = true)
+public class Constellation extends BaseEntity{
+    //@NotBlank(message = "Name is required")
+    @Column(unique = true,nullable = false)
+    //@Size(min = 3, max = 20, message = "Name must be between 3 and 20 characters")
     private String name;
-    @Column
-    @NotBlank(message = "Description is required")
-    @Size(min = 5, message = "Description must be at least 5 characters long")
+    @Column(nullable = false)
+   // @NotBlank(message = "Description is required")
+    //@Size(min = 5, message = "Description must be at least 5 characters long")
     private String description;
 
     // Define the relationship with stars
-    @OneToMany(mappedBy = "constellation")
-    private List<Star> stars;
+    @OneToMany(mappedBy = "constellation",  fetch = FetchType.EAGER)
+    private Set<Star> stars = new HashSet<> ();
 
-    // Constructors, getters, and setters
-    public Constellation() {
-    }
+        // Getters and setters
 
-    public Constellation(String name, String description) {
-        this.name = name;
-        this.description = description;
-    }
-
-    // Getters and setters
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -60,11 +43,11 @@ public class Constellation {
         this.description = description;
     }
 
-    public List<Star> getStars() {
+    public Set<Star> getStars() {
         return stars;
     }
 
-    public void setStars(List<Star> stars) {
+    public void setStars(Set<Star> stars) {
         this.stars = stars;
     }
 }

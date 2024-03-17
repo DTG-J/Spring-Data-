@@ -1,68 +1,47 @@
 package softuni.exam.models.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
+/*import javax.validation.constraints.Size;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
-import java.util.List;
+import java.math.BigInteger;*/
+import java.util.HashSet;
+//import java.util.List;
+import java.util.Set;
 
 
 @Entity
 @Table(name = "stars")
-public class Star {
-    @Column
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class Star extends BaseEntity{
 
-    @NotBlank(message = "Name is required")
-    @Size(min = 2, max = 30, message = "Name must be between 2 and 30 characters")
-    @Column(unique = true)
+    //@NotBlank(message = "Name is required")
+    //@Size(min = 2, max = 30, message = "Name must be between 2 and 30 characters")
+    @Column(unique = true, nullable = false)
     private String name;
-    @Column(name = "light_years")
-    @Positive(message = "Light years must be a positive number")
-    private double lightYears;
+    @Column(name = "light_years", nullable = false)
+    //@Positive(message = "Light years must be a positive number")
+    private Double lightYears;
 
-    @Column
-    @NotBlank(message = "Description is required")
-    @Size(min = 6, message = "Description must be at least 6 characters long")
+    @Column(nullable = false)
+    //@NotBlank(message = "Description is required")
+    //@Size(min = 6, message = "Description must be at least 6 characters long")
     private String description;
 
-    public enum StarType {
-        RED_GIANT, WHITE_DWARF, NEUTRON_STAR
-    }
 
-    @Column(name = "star_type")
+
+    @Column(name = "star_type", nullable = false)
     @Enumerated(EnumType.STRING)
     private StarType starType;
 
-    @ManyToMany(mappedBy = "observingStar")
-    private List<Astronomer> observers;
+    @OneToMany(mappedBy = "observingStar")
+    private Set<Astronomer> observers = new HashSet<> ();
 
     @ManyToOne
-    @JoinColumn(name = "constellation_id")
+    @JoinColumn(name = "constellation_id", nullable = false)
     private Constellation constellation;
 
+
     // Constructors, getters, and setters
-    public Star() {
-    }
-
-    public Star(String name, double lightYears, String description, StarType starType) {
-        this.name = name;
-        this.lightYears = lightYears;
-        this.description = description;
-        this.starType = starType;
-    }
-
-    // Getters and setters
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -72,11 +51,11 @@ public class Star {
         this.name = name;
     }
 
-    public double getLightYears() {
+    public Double getLightYears() {
         return lightYears;
     }
 
-    public void setLightYears(double lightYears) {
+    public void setLightYears(Double lightYears) {
         this.lightYears = lightYears;
     }
 
@@ -96,11 +75,11 @@ public class Star {
         this.starType = starType;
     }
 
-    public List<Astronomer> getObservers() {
+    public Set<Astronomer> getObservers() {
         return observers;
     }
 
-    public void setObservers(List<Astronomer> observers) {
+    public void setObservers(Set<Astronomer> observers) {
         this.observers = observers;
     }
 

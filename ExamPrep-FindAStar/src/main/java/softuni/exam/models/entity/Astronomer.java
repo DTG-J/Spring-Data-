@@ -1,70 +1,53 @@
 package softuni.exam.models.entity;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
-import javax.validation.constraints.DecimalMin;
+/*import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
-import java.util.List;
+import java.math.BigInteger;*/
+import java.time.LocalDate;
+//import java.util.Date;
+//import java.util.List;
 
 
 @Entity
 @Table(name = "astronomers")
-public class Astronomer {
-    @Column
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class Astronomer extends BaseEntity {
 
-    @NotBlank(message = "First name is required")
-    @Size(min = 2, max = 30, message = "First name must be between 2 and 30 characters")
-    @Column(name = "first_name")
+    //@NotBlank(message = "First name is required")
+    @Column(name = "first_name", nullable = false)
+    //@Size(min = 2, max = 30, message = "First name must be between 2 and 30 characters")
     private String firstName;
 
-    @NotBlank(message = "Last name is required")
-    @Size(min = 2, max = 30, message = "Last name must be between 2 and 30 characters")
-    @Column(name = "last_name")
+    //@NotBlank(message = "Last name is required")
+    @Column(name = "last_name", nullable = false)
+    //@Size(min = 2, max = 30, message = "Last name must be between 2 and 30 characters")
     private String lastName;
 
     @Column
-    @DecimalMin(value = "15000.00", message = "Salary must be greater than or equal to 15000.00")
+    //@DecimalMin(value = "15000.00", message = "Salary must be greater than or equal to 15000.00")
     private double salary;
-
-    @DecimalMin(value = "500.00", message = "Average observation hours must be greater than or equal to 500.00")
-    @Column(name = "average_observation_hours")
-    private double averageObservationHours;
+    @Column(name = "average_observation_hours", nullable = false)
+    //@DecimalMin(value = "500.00", message = "Average observation hours must be greater than or equal to 500.00")
+    private Double averageObservationHours;
 
     @Column
-    @Temporal(TemporalType.DATE)
+    //@Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date birthday;
+    private LocalDate birthday;
 
-    @ManyToMany
-    @JoinColumn(name = "observing_star_id")
-    private List<Star> observingStar;
+    @ManyToOne
+    @JoinColumn(name = "observing_star_id", nullable = false)
+    private Star observingStar;
 
     // Constructors, getters, and setters
-    public Astronomer() {
-    }
-
-    public Astronomer(String firstName, String lastName, double salary, double averageObservationHours) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.salary = salary;
-        this.averageObservationHours = averageObservationHours;
-    }
 
     // Getters and setters
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -90,29 +73,27 @@ public class Astronomer {
         this.salary = salary;
     }
 
-    public double getAverageObservationHours() {
+    public Double getAverageObservationHours() {
         return averageObservationHours;
     }
 
-    public void setAverageObservationHours(double averageObservationHours) {
+    public void setAverageObservationHours(Double averageObservationHours) {
         this.averageObservationHours = averageObservationHours;
     }
 
-    public Date getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 
     public Star getObservingStar() {
-        return (Star) observingStar;
+        return observingStar;
     }
 
     public void setObservingStar(Star observingStar) {
-        this.observingStar = (List<Star>) observingStar;
+        this.observingStar = observingStar;
     }
 }
-
-
