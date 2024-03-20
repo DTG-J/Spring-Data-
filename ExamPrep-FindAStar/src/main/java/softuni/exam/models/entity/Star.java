@@ -1,6 +1,7 @@
 package softuni.exam.models.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 /*import javax.validation.constraints.Size;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
@@ -22,8 +23,9 @@ public class Star extends BaseEntity{
     //@Positive(message = "Light years must be a positive number")
     private Double lightYears;
 
+    @Lob
+    @NotBlank(message = "Description is required")
     @Column(nullable = false)
-    //@NotBlank(message = "Description is required")
     //@Size(min = 6, message = "Description must be at least 6 characters long")
     private String description;
 
@@ -37,7 +39,7 @@ public class Star extends BaseEntity{
     private Set<Astronomer> observers = new HashSet<> ();
 
     @ManyToOne
-    @JoinColumn(name = "constellation_id", nullable = false)
+    @JoinColumn(name = "constellation_id")
     private Constellation constellation;
 
 

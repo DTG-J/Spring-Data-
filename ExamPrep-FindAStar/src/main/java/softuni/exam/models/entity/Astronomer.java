@@ -28,7 +28,7 @@ public class Astronomer extends BaseEntity {
     //@Size(min = 2, max = 30, message = "Last name must be between 2 and 30 characters")
     private String lastName;
 
-    @Column
+    @Column(nullable = false)
     //@DecimalMin(value = "15000.00", message = "Salary must be greater than or equal to 15000.00")
     private double salary;
     @Column(name = "average_observation_hours", nullable = false)
@@ -41,7 +41,7 @@ public class Astronomer extends BaseEntity {
     private LocalDate birthday;
 
     @ManyToOne
-    @JoinColumn(name = "observing_star_id", nullable = false)
+    @JoinColumn(name = "observing_star_id")
     private Star observingStar;
 
     // Constructors, getters, and setters
