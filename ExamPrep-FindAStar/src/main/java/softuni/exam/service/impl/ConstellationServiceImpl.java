@@ -12,6 +12,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Optional;
 
 public class ConstellationServiceImpl implements ConstellationService {
     private static final String FILE_PATH = "src/main/resources/files/json/constellations.json";
@@ -46,13 +47,15 @@ public class ConstellationServiceImpl implements ConstellationService {
                 (new FileReader (FILE_PATH), ConstellationSeedDTO[].class);
 
         for (ConstellationSeedDTO constellationSeedDto : constellationSeedDtos) {
-            if (!this.validationUtil.isValid (constellationSeedDto)){
+            Optional<Constellation>optional =  this.constellationRepository.findByName(constellationSeedDto.getName ());
+            if (!this.validationUtil.isValid (constellationSeedDto)|| optional.isPresent ()){
                 sb.append ("Invalid constellation\n" );
                 continue;
             }
             Constellation constellation = this.modelMapper.map (constellationSeedDto, Constellation.class);
             this.constellationRepository.saveAndFlush (constellation);
-            sb.append (String.format (""))
+            sb.append (String.format ("Successfully imported constellation %s - %s", constellation.getName (),
+                    constellation.getDescription ()));
         }
         return sb.toString ();
     }
