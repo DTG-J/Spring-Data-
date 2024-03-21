@@ -3,6 +3,7 @@ package softuni.exam.service.impl;
 import com.google.gson.Gson;
 import org.modelmapper.ModelMapper;
 import softuni.exam.models.dto.jsons.ConstellationSeedDTO;
+import softuni.exam.models.entity.Constellation;
 import softuni.exam.repository.ConstellationRepository;
 import softuni.exam.service.ConstellationService;
 import softuni.exam.util.ValidationUtil;
@@ -43,11 +44,15 @@ public class ConstellationServiceImpl implements ConstellationService {
 
         ConstellationSeedDTO[] constellationSeedDtos = this.gson.fromJson
                 (new FileReader (FILE_PATH), ConstellationSeedDTO[].class);
-        
+
         for (ConstellationSeedDTO constellationSeedDto : constellationSeedDtos) {
             if (!this.validationUtil.isValid (constellationSeedDto)){
-
+                sb.append ("Invalid constellation\n" );
+                continue;
             }
+            Constellation constellation = this.modelMapper.map (constellationSeedDto, Constellation.class);
+            this.constellationRepository.saveAndFlush (constellation);
+            sb.append (String.format (""))
         }
         return sb.toString ();
     }
