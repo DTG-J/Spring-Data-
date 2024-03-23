@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class StarServiceImpl implements StarService {
@@ -70,6 +71,14 @@ public class StarServiceImpl implements StarService {
 
     @Override
     public String exportStars() {
-        return null;
+        return this.starRepository
+                .findAllByStarTypeOrderByLightYears()
+                .stream()
+                .map(s -> String.format("Star: %s\n" +
+                                "   *Distance: %.2f light years\n" +
+                                "   **Description: %s\n" +
+                                "   ***Constellation: %s\n",
+                        s.getName(), s.getLightYears(), s.getDescription(), s.getConstellation().getName()))
+                .collect(Collectors.joining());
     }
 }
