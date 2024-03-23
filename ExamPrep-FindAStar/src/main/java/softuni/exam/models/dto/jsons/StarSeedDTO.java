@@ -9,23 +9,25 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class StarSeedDTO {
+public class StarSeedDTO implements Serializable {
     //@NotBlank(message = "Name is required")
-
     @Expose
-    @Size(min = 2, max = 30, message = "Name must be between 2 and 30 characters")
-    private String name;
+    @NotBlank(message = "Description is required")
+    @Size(min = 6, message = "Description must be at least 6 characters long")
+    private String description;
+
     @Expose
     @Positive(message = "Light years must be a positive number")
     private Double lightYears;
 
     @Expose
-    @NotBlank(message = "Description is required")
-    @Size(min = 6, message = "Description must be at least 6 characters long")
-    private String description;
+    @Size(min = 2, max = 30, message = "Name must be between 2 and 30 characters")
+    private String name;
+
 
     @Expose
     @Enumerated(EnumType.STRING)

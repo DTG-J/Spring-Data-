@@ -8,9 +8,10 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlElement;
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class AstronomerSeedDTO {
+public class AstronomerSeedDTO implements Serializable {
     @XmlElement(name = "first_name")
     @NotNull
     @Size(min = 2, max = 30, message = "First name must be between 2 and 30 characters")
@@ -36,7 +37,7 @@ public class AstronomerSeedDTO {
     private LocalDate birthday;
 
     @XmlElement(name = "observing_star_id")
-    private Long observingStar;
+    private long star;
 
     public String getFirstName() {
         return firstName;
@@ -78,11 +79,12 @@ public class AstronomerSeedDTO {
         this.birthday = birthday;
     }
 
-    public Long getObservingStar() {
-        return observingStar;
+    public long getStar() {
+        return star;
     }
 
-    public void setObservingStar(Long observingStar) {
-        this.observingStar = observingStar;
+    public void setStar(long star) {
+        this.star = star;
     }
 }
+

@@ -2,6 +2,7 @@ package softuni.exam.models.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.websocket.Encoder;
 /*import javax.validation.constraints.Size;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
@@ -25,7 +26,7 @@ public class Star extends BaseEntity{
 
     @Lob
     @NotBlank(message = "Description is required")
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     //@Size(min = 6, message = "Description must be at least 6 characters long")
     private String description;
 
