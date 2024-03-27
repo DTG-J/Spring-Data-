@@ -1,22 +1,26 @@
-package softuni.exam.models.entity;
+package softuni.exam.models.dto;
 
-import javax.persistence.*;
-import java.util.Set;
+import com.google.gson.annotations.Expose;
+import softuni.exam.models.entity.Country;
 
-@Entity
-@Table(name = "cities")
-public class City extends BaseEntity{
-    @Column(name = "city_name", nullable = false, unique = true)
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
+
+
+public class CitySeedDto implements Serializable {
+    @Expose
+    @NotBlank
+    @Size(min = 2, max = 60)
     private String cityName;
-    @Column(columnDefinition = "TEXT")
+    @Expose
+    @Min (2)
     private String description;
-    @Column(nullable = false)
+    @Expose
+    @Min (500)
     private Integer population;
-
-    @ManyToOne
-    @JoinColumn(name = "country_id", referencedColumnName = "id")
     private Country country;
-
 
     public String getCityName() {
         return cityName;
@@ -50,4 +54,3 @@ public class City extends BaseEntity{
         this.country = country;
     }
 }
-
