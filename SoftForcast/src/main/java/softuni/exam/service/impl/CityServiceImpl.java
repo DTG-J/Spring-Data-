@@ -1,9 +1,10 @@
 package softuni.exam.service.impl;
 
+import org.springframework.stereotype.Service;
 import softuni.exam.service.CityService;
 
 import java.io.IOException;
-
+@Service
 public class CityServiceImpl implements CityService {
     @Override
     public boolean areImported() {
