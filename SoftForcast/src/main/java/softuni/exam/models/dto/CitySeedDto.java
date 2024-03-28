@@ -2,9 +2,9 @@ package softuni.exam.models.dto;
 
 import com.google.gson.annotations.Expose;
 import softuni.exam.models.entity.Country;
-
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
@@ -20,7 +20,8 @@ public class CitySeedDto implements Serializable {
     @Expose
     @Min (500)
     private Integer population;
-    private Country country;
+    @NotNull
+    private Long country;
 
     public String getCityName() {
         return cityName;
@@ -46,11 +47,12 @@ public class CitySeedDto implements Serializable {
         this.population = population;
     }
 
-    public Country getCountry() {
+    public Long getCountry() {
         return country;
     }
 
-    public void setCountry(Country country) {
+    public void setCountry(Long country) {
         this.country = country;
     }
 }
+

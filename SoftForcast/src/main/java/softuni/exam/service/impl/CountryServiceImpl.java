@@ -60,4 +60,9 @@ public class CountryServiceImpl implements CountryService {
 
         return sb.toString();
     }
+
+    @Override
+    public Optional<Country> findById(Long country) {
+        return Optional.empty ();
+    }
 }

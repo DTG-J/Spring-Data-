@@ -4,12 +4,12 @@ import com.google.gson.Gson;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import softuni.exam.models.dto.CitySeedDto;
-import softuni.exam.models.dto.CountriesImportDto;
 import softuni.exam.models.entity.City;
 import softuni.exam.models.entity.Country;
 import softuni.exam.repository.CityRepository;
 import softuni.exam.repository.CountryRepository;
 import softuni.exam.service.CityService;
+import softuni.exam.service.CountryService;
 import softuni.exam.util.ValidationUtil;
 
 import java.io.FileReader;
@@ -22,15 +22,18 @@ import java.util.Optional;
 public class CityServiceImpl implements CityService {
     private static final String FILE_PATH = "src/main/resources/files/json/cities.json";
     private final CityRepository cityRepository;
+    private final CountryService countryService;
     private final Gson gson;
     private final ModelMapper modelMapper;
     private final ValidationUtil validationUtil;
 
-    public CityServiceImpl(CityRepository cityRepository, Gson gson, ModelMapper modelMapper, ValidationUtil validationUtil) {
+    public CityServiceImpl(CityRepository cityRepository, CountryRepository countryRepository, CountryService countryService, Gson gson, ModelMapper modelMapper, ValidationUtil validationUtil) {
         this.cityRepository = cityRepository;
+        this.countryService = countryService;
         this.gson = gson;
         this.modelMapper = modelMapper;
         this.validationUtil = validationUtil;
+
     }
 
     @Override
@@ -50,8 +53,9 @@ public class CityServiceImpl implements CityService {
                 new FileReader (FILE_PATH), CitySeedDto[].class);
 
         for (CitySeedDto citySeedDto : citySeedDtos) {
-            Optional<City> optional = this.cityRepository.findByCityName(citySeedDto.getCityName ());
-            if (!this.validationUtil.isValid(citySeedDto) || optional.isPresent()) {
+            Optional<City> optionalCity = this.cityRepository.findByCityName(citySeedDto.getCityName ());
+            Optional<Country> optionalCountry = this.countryService.findById(citySeedDto.getCountry ());
+            if (!this.validationUtil.isValid(citySeedDto) || optionalCity.isPresent() || optionalCountry.isEmpty ())  {
                 sb.append("Invalid city\n");
                 continue;
             }
