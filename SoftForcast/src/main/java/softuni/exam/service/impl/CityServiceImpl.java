@@ -22,14 +22,13 @@ import java.util.Optional;
 public class CityServiceImpl implements CityService {
     private static final String FILE_PATH = "src/main/resources/files/json/cities.json";
     private final CityRepository cityRepository;
-    private final CountryService countryService;
+
     private final Gson gson;
     private final ModelMapper modelMapper;
     private final ValidationUtil validationUtil;
 
-    public CityServiceImpl(CityRepository cityRepository, CountryRepository countryRepository, CountryService countryService, Gson gson, ModelMapper modelMapper, ValidationUtil validationUtil) {
+    public CityServiceImpl(CityRepository cityRepository, Gson gson, ModelMapper modelMapper, ValidationUtil validationUtil) {
         this.cityRepository = cityRepository;
-        this.countryService = countryService;
         this.gson = gson;
         this.modelMapper = modelMapper;
         this.validationUtil = validationUtil;
@@ -46,7 +45,7 @@ public class CityServiceImpl implements CityService {
         return new String (Files.readAllBytes(Path.of (FILE_PATH)));
     }
 
-    @Override
+    /*@Override
     public String importCities() throws IOException {
         StringBuilder sb = new StringBuilder();
         CitySeedDto[] citySeedDtos = this.gson.fromJson (
@@ -54,8 +53,8 @@ public class CityServiceImpl implements CityService {
 
         for (CitySeedDto citySeedDto : citySeedDtos) {
             Optional<City> optionalCity = this.cityRepository.findByCityName(citySeedDto.getCityName ());
-            Optional<Country> optionalCountry = this.countryService.findById(citySeedDto.getCountry ());
-            if (!this.validationUtil.isValid(citySeedDto) || optionalCity.isPresent() || optionalCountry.isEmpty ())  {
+           // Optional<Country> optionalCountry = this.countryRepository.findById(citySeedDto.getCountry ());
+            if (!this.validationUtil.isValid(citySeedDto) || optionalCity.isPresent()){ //|| optionalCountry.isEmpty ())  {
                 sb.append("Invalid city\n");
                 continue;
             }
@@ -67,5 +66,44 @@ public class CityServiceImpl implements CityService {
 
         return sb.toString();
 
+    }*/
+    @Override
+    public String importCities() throws IOException {
+        StringBuilder sb = new StringBuilder();
+
+        Arrays.stream(gson
+                        .fromJson(readCitiesFileContent(), CitySeedDto[].class))
+                .filter(citySeedDto -> {
+                    boolean isValid = validationUtil.isValid(citySeedDto);
+
+                    Optional<City> byCityName = cityRepository.findByCityName(citySeedDto.getCityName());
+                    if (byCityName.isPresent()) {
+                        isValid = false;
+                    }
+
+                    sb.append(isValid
+                                    ? String.format("Successfully imported city %s - %d", citySeedDto.getCityName()
+                                    , citySeedDto.getPopulation())
+                                    : "Invalid city")
+                            .append(System.lineSeparator());
+
+                    return isValid;
+                })
+                .map(citySeedDto -> {
+                    City city = modelMapper.map(citySeedDto, City.class);
+
+                    Optional<Country> countryById = countryService.getCountryById(citySeedDto.getCountry());
+                    if (countryById.isEmpty()) {
+                        System.out.println("ERROR:  " + citySeedDto.getCityName());
+                        return city;
+                    }
+
+                    city.setCountry(countryById.get());
+                    return city;
+                })
+                .forEach(cityRepository::save);
+
+        return sb.toString();
     }
+
 }
