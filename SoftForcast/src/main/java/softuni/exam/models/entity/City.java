@@ -1,6 +1,7 @@
 package softuni.exam.models.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
@@ -14,6 +15,7 @@ public class City extends BaseEntity{
     private Integer population;
 
     @ManyToOne
+    @NotNull
     @JoinColumn(name = "country_id", referencedColumnName = "id")
     private Country country;
 

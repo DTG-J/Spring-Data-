@@ -16,19 +16,24 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Optional;
 
 @Service
 public class CityServiceImpl implements CityService {
     private static final String FILE_PATH = "src/main/resources/files/json/cities.json";
     private final CityRepository cityRepository;
+    private final CountryRepository countryRepository;
+    private final CountryService countryService;
 
     private final Gson gson;
     private final ModelMapper modelMapper;
     private final ValidationUtil validationUtil;
 
-    public CityServiceImpl(CityRepository cityRepository, Gson gson, ModelMapper modelMapper, ValidationUtil validationUtil) {
+    public CityServiceImpl(CityRepository cityRepository, CountryRepository countryRepository, CountryService countryService, Gson gson, ModelMapper modelMapper, ValidationUtil validationUtil) {
         this.cityRepository = cityRepository;
+        this.countryRepository = countryRepository;
+        this.countryService = countryService;
         this.gson = gson;
         this.modelMapper = modelMapper;
         this.validationUtil = validationUtil;
@@ -45,7 +50,7 @@ public class CityServiceImpl implements CityService {
         return new String (Files.readAllBytes(Path.of (FILE_PATH)));
     }
 
-    /*@Override
+   /* @Override
     public String importCities() throws IOException {
         StringBuilder sb = new StringBuilder();
         CitySeedDto[] citySeedDtos = this.gson.fromJson (
@@ -53,13 +58,14 @@ public class CityServiceImpl implements CityService {
 
         for (CitySeedDto citySeedDto : citySeedDtos) {
             Optional<City> optionalCity = this.cityRepository.findByCityName(citySeedDto.getCityName ());
-           // Optional<Country> optionalCountry = this.countryRepository.findById(citySeedDto.getCountry ());
-            if (!this.validationUtil.isValid(citySeedDto) || optionalCity.isPresent()){ //|| optionalCountry.isEmpty ())  {
+            Optional<Country> optionalCountry = this.countryRepository.findById(citySeedDto.getCountry ());
+            if (!this.validationUtil.isValid(citySeedDto) || optionalCity.isPresent() || !optionalCountry.isPresent ())  {
                 sb.append("Invalid city\n");
                 continue;
             }
 
             City city = this.modelMapper.map (citySeedDto, City.class);
+                  city.setCountry(optionalCountry.get());
             this.cityRepository.saveAndFlush(city);
             sb.append(String.format("Successfully imported city %s - %s\n", city.getCityName (), city.getPopulation ()));
         }
