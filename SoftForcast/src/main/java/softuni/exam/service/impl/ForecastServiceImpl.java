@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class ForecastServiceImpl implements ForecastService {
@@ -101,6 +102,26 @@ public class ForecastServiceImpl implements ForecastService {
 
     @Override
     public String exportForecasts() {
-        return null;
+        StringBuilder sb = new StringBuilder();
+
+        Set<Forecast> allByDayOfWeek_sunday = forecastRepository.findAllByDayOfWeekAndCity_PopulationLessThanOrderByMaxTemperatureDescIdAsc(DaysOfWeek.SUNDAY, 150000);
+
+        allByDayOfWeek_sunday
+                .forEach(f -> {
+                    sb.append(String.format("City: %s\n" +
+                                            "-min temperature: %.2f\n" +
+                                            "--max temperature: %.2f\n" +
+                                            "---sunrise: %s\n" +
+                                            "-----sunset: %s",
+                                    f.getCity().getCityName(),
+                                    f.getMinTemperature(),
+                                    f.getMaxTemperature(),
+                                    f.getSunrise(),
+                                    f.getSunset()))
+                            .append(System.lineSeparator());
+                });
+
+        return sb.toString().trim();
     }
+    
 }
